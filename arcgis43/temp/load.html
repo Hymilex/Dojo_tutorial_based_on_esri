@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>load the map </title>
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/esri/css/main.css" />
+    <script>
+    // set locale before JSAPI is loaded
+    dojoConfig = {
+        locale: "ja",
+        parseOnLoad: true
+    };
+    </script>
+    <script src="http://localhost:8989/arcgis43/library/4.3/4.3/init.js"></script>
+    <script>
+    require(["esri/Map", "dojo/i18n!esri/nls/common", "dojo/domReady!"],
+        function(Map, bundle) {
+            bundle.form.yes = "Yeah!";
+            bundle.form.no = "No way!";
+        }
+    );
+    </script>
+    <style>
+    html,
+    body,
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+    </style>
+    <script>
+    require(["esri/Map", "esri/views/MapView", "esri/layers/TileLayer", "esri/layers/MapImageLayer","esri/views/SceneView", 
+        "esri/layers/FeatureLayer","dojo/domReady!"], function(Map, MapView, TileLayer, MapImageLayer,SceneView,FeatureLayer) {
+        var layer = new FeatureLayer({
+            url: "http://localhost:6080/arcgis/rest/services/arcgis/China/MapServer/1"
+        });
+        var layer1 = new MapImageLayer({
+            url: "http://localhost:6080/arcgis/rest/services/arcgis/China/MapServer/1"
+        });
+        var map = new Map({
+            basemap: "streets"
+        });
+        var view = new SceneView({
+            container: "viewDiv",
+            map: map,
+            center: [-85.050200, 33.125524],
+            zoom: 6,
+            SaptialReference:4326
+        });
+        layer.load().then(function(obj) {
+            map.add(layer);
+            console.log(obj);
+            alert("success!");
+        }).otherwise(function(err) {
+            alert("this is wrong!");
+        });
+    });
+    </script>
+</head>
+
+<body>
+    <div id="viewDiv">
+    </div>
+</body>
+
+</html>

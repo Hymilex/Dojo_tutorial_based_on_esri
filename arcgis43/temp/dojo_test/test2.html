@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>modules with modules.</title>
+    <!--pay attention to the autocast-->
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/esri/css/main.css" />
+    <script>
+    dojoConfig = {
+        async: true, //必须得申明异步调用
+        isDebug: true,
+        tlmSiblingOfDojo: false
+    };
+    </script>
+    <script src="http://localhost:8989/arcgis43/library/4.3/4.3/init.js"></script>
+    <style>
+    #console {
+        background-color: #0f0f0f;
+        font-weight: bold;
+        background: rgb(255, 87, 98);
+        display: block;
+        text-align: center;
+    }
+    </style>
+    <script>
+    require(["app/DateManager.js"], function(DateManager) {
+        let c = document.getElementById("console");
+        if (!c) {
+            c = document.createElement("div");
+            c.id = "console";
+            c.className = "console";
+           // c.innerHTML=fsp.templateString;
+            document.body.appendChild(c);
+        }
+        var cr=new DateManager();
+        cr.showDate("console");
+
+    });
+    require(["app/NavBar.js"],function(fsp){
+    	let c=document.getElementById("console1");
+    	c.innerHTML=fsp.templateString;
+    });
+    </script>
+</head>
+
+<body>
+<div id="console1">
+	
+</div>
+</body>
+
+</html>

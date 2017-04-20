@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>logo</title>
+    
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/esri/css/main.css" />
+    <script src="http://localhost:8989/arcgis43/library/4.3/4.3/init.js"></script>
+    <style>
+    html,
+    body,
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+    }
+    
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    #fx {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .sassy-theme .esri-widget,
+    .sassy-theme .esri-widget-button,
+    .sassy-theme .esri-menu,
+    .sassy-theme .esri-popup__main-container,
+    .sassy-theme .esri-popup .esri-pointer-direction,
+    .sassy-theme .esri-button {
+        background-color: #c69;
+        color: #fff;
+    }
+    
+    .sassy-theme .esri-widget-button:focus,
+    .sassy-theme .esri-widget-button:hover,
+    .sassy-theme .esri-menu li:focus,
+    .sassy-theme .esri-menu li:hover {
+        background-color: #699;
+        color: #fff;
+    }
+    
+    .sassy-theme .esri-button:focus,
+    .sassy-theme .esri-button:hover {
+        color: #fff;
+    }
+    
+    .sassy-theme .esri-popup {
+        background-color: #699;
+        color: #fff;
+    }
+    </style>
+    <script>
+    var map, view;
+
+    require([
+        "dojo/dom-construct",
+        "esri/Map",
+        "esri/views/SceneView",
+        "esri/widgets/Search",
+        "esri/layers/TileLayer",
+        "dojo/domReady!"
+    ], function(domConstruct, Map, SceneView, Search,TileLayer) {
+    	var layer=new TileLayer({
+    		url:"http://localhost:6080/arcgis/rest/services/arcgis/China/MapServer"
+    	});
+        map = new Map({
+            basemap: "dark-gray",
+        });
+        layer.load().then(function(evt){
+        	alert(evt);
+        	map.add(layer,1000);
+        });
+        view = new SceneView({
+            map: map,
+            container: "viewDiv",
+            center: [-106.4508651185194, 31.763963987428166],
+            zoom: 16
+        });
+        //dynamic dom creatation.
+        var logo = domConstruct.create("img", {
+            src: "http://localhost:8989/arcgis43/temp/assets/image/cjx.jpg",
+            id: "logo",
+            title: "logo"
+        });
+        //GEOCODING DEFAULT.
+        var search = new Search({
+                view: view
+            }),
+            fx = new domConstruct.create("div", {
+                id: "fx",
+                title: "fx div",
+                innerHTML: "<img src='http://localhost:8989/arcgis43/temp/assets/image/cjx.jpg' style='width:100px;height:100px'/>"
+            });
+        view.ui.add(fx, "bottom-left");
+        view.ui.add(logo, "bottom-right");
+        view.ui.add(search, "top-right");
+    });
+    </script>
+</head>
+
+<body class="sassy-theme">
+    <div id="viewDiv"></div>
+</body>
+
+</html>

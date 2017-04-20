@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AMD base tutorial!</title>
+    <!--pay attention to the autocast-->
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/esri/css/main.css" />
+    <script>
+    dojoConfig = {
+        async: true,//必须得申明异步调用
+        //isDebug: true,
+        //baseUrl: 'http://localhost:8989/arcgis43',
+        tlmSiblingOfDojo: false
+    };
+    </script>
+    <script src="http://localhost:8989/arcgis43/library/4.3/4.3/init.js"></script>
+    <style>
+    	#console{
+    		background-color: #0f0f0f;
+    		font-weight: bold;
+    		background: rgb(255,87,98);
+    		display: block;
+    		text-align: center;
+    	}
+
+    </style>
+    <script>
+    require(["app/counter.js"], function(counter) {
+        log(counter.getValue());
+        counter.increment();
+        log(counter.getValue());
+        counter.decrement();
+        log(counter.getValue());
+        // Define the "log" function to display console-like messages directly on the page
+        function log(msg) {
+            var c = document.getElementById("console");
+            if (!c) {
+                c = document.createElement("div");
+                c.id = "console";
+                c.className="console";
+                document.body.appendChild(c);
+            }
+            c.innerHTML += "<div>" + msg + "</div>";
+            var tempInfo=document.createElement("div");
+            tempInfo.id="template";
+            tempInfo.className="template";
+            tempInfo.innerHTML="this is amd base.";
+            c.appendChild(tempInfo);
+        }
+    });
+    </script>
+</head>
+
+<body class="claro">
+</body>
+
+</html>

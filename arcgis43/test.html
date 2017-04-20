@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>Test Map</title>
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/esri/css/main.css" />
+    <style>
+    html,
+    body,
+    #ui-map-view {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+        #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+    
+    .esri-legend {
+      background-color: black;
+      color: white;
+      opacity: 0.85;
+    }
+    </style>
+    <script src="http://localhost:8989/arcgis43/library/4.3/4.3/init.js"></script>
+   <script>
+    require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer",
+        "esri/renderers/SimpleRenderer",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/widgets/Legend",
+        "dojo/domReady!"
+      ],
+      function(
+        Map, MapView, FeatureLayer, SimpleRenderer,
+        SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Legend
+      ) {
+
+        /******************************************************************
+         *
+         * Set up renderer for visualizing all cities with a single symbol
+         *
+         ******************************************************************/
+
+        var citiesRenderer = new SimpleRenderer({
+          symbol: new SimpleMarkerSymbol({
+            size: 10,
+            color: "#FF4000",
+            outline: { // autocasts as new SimpleLineSymbol()
+              color: [255, 64, 0, 0.4], // autocasts as new Color()
+              width: 7
+            }
+          })
+        });
+
+        var citiesLyr = new FeatureLayer({
+          url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/WorldCities/FeatureServer/0",
+          renderer: citiesRenderer
+        });
+
+        /******************************************************************
+         *
+         * Set up renderer for visualizing all highways with a single symbol
+         *
+         ******************************************************************/
+
+        var hwyRenderer = new SimpleRenderer({
+          symbol: new SimpleLineSymbol({
+            width: 1,
+            color: [64, 255, 0]
+          })
+        });
+
+        var hwyLyr = new FeatureLayer({
+          url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/USA_Freeway_System/FeatureServer/2",
+          renderer: hwyRenderer,
+          minScale: 0,
+          maxScale: 0,
+          definitionExpression: "CLASS = 'O' OR CLASS = 'I' OR CLASS = 'U'"
+        });
+
+        /******************************************************************
+         *
+         * Set up renderer for visualizing all states with a single symbol
+         *
+         ******************************************************************/
+
+        var statesRenderer = new SimpleRenderer({
+          symbol: new SimpleFillSymbol({
+            color: [0, 255, 0, 0.1],
+            outline: {
+              color: [128, 128, 128],
+              width: 1
+            }
+          })
+        });
+
+        var statesLyr = new FeatureLayer({
+          url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3",
+          renderer: statesRenderer
+        });
+
+        // Add the layers to the map
+        var map = new Map({
+          basemap: "dark-gray",
+          layers: [statesLyr, hwyLyr, citiesLyr]
+        });
+
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-76.925, 39.741638],
+          zoom: 7
+        });
+
+        /******************************************************************
+         *
+         * Add layers to layerInfos on the legend
+         *
+         ******************************************************************/
+
+        var legend = new Legend({
+          view: view,
+          layerInfos: [
+          {
+            layer: citiesLyr,
+            title: "Major Cities"
+          }, {
+            layer: hwyLyr,
+            title: "Major Highways"
+          }, {
+            layer: statesLyr,
+            title: "State Boundaries"
+          }]
+        });
+
+        view.ui.add(legend, "bottom-left");
+      });
+  </script>
+</head>
+
+<body class="claro">
+    <div id="viewDiv"></div>
+</body>
+
+</html>

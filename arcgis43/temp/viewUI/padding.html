@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>padding</title>
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8989/arcgis43/library/4.3/4.3/esri/css/main.css" />
+    <script src="http://localhost:8989/arcgis43/library/4.3/4.3/init.js"></script>
+    <style>
+    html,
+    body,
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+    
+    #sidebar {
+        z-index: 99;
+        position: absolute;
+        top: 0;
+        right: 0px;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        width: 320px;
+/*        float: right;*/
+    }
+    
+    #text {
+        color: white;
+        padding: 3%;
+    }
+    </style>
+    <script>
+    require(["esri/Map", "esri/views/MapView", "dojo/domReady!"], function(Map, MapView) {
+        //create a new map 
+        var map = new Map({
+                basemap: "streets",
+            }),
+            view = new MapView({
+            	container:"viewDiv",
+            	map:map,
+            	center:[-74.045459, 40.690083],
+            	zoom:16,
+            	padding:{
+            		 left:320,//move the control is widget control.
+            		 top:320,
+            		right:320, //without the px unit.move the control is logo
+            		bottom:320
+            	}
+            });
+        //create the view set the view padding to be 320px from the right.
+
+    });
+    </script>
+</head>
+
+<body>
+    <div id="viewDiv">
+        <div id="sidebar">
+            <div id="text">
+                <h1>Liberty Island</h1>
+                <p>Note that setting the view.padding makes the view.center, view.extent etc work off a subsection of the full view.</p>
+                <p>Try to resize the window to get a better understanding.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
